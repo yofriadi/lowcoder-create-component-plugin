@@ -1,5 +1,5 @@
-import SelectComp from "./SelectComp";
+import CustomComp from "./CustomComp";
 
 export default {
-  selectComp: SelectComp,
+  customComp: CustomComp,
 };

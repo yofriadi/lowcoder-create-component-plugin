@@ -275,7 +275,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.20.13":
+"@babel/runtime@npm:^7.10.1, @babel/runtime@npm:^7.11.1, @babel/runtime@npm:^7.18.0, @babel/runtime@npm:^7.18.3, @babel/runtime@npm:^7.20.0, @babel/runtime@npm:^7.20.13, @babel/runtime@npm:^7.20.7, @babel/runtime@npm:^7.23.2":
   version: 7.23.9
   resolution: "@babel/runtime@npm:7.23.9"
   dependencies:
@@ -751,6 +751,37 @@ __metadata:
   version: 0.11.0
   resolution: "@pkgjs/parseargs@npm:0.11.0"
   checksum: 6ad6a00fc4f2f2cfc6bff76fb1d88b8ee20bc0601e18ebb01b6d4be583733a860239a521a7fbca73b612e66705078809483549d2b18f370eb346c5155c8e4a0f
+  languageName: node
+  linkType: hard
+
+"@rc-component/portal@npm:^1.1.0":
+  version: 1.1.2
+  resolution: "@rc-component/portal@npm:1.1.2"
+  dependencies:
+    "@babel/runtime": ^7.18.0
+    classnames: ^2.3.2
+    rc-util: ^5.24.4
+  peerDependencies:
+    react: ">=16.9.0"
+    react-dom: ">=16.9.0"
+  checksum: bdb14f48d3d0d7391347a4da37e8de1b539ae7b0bc71005beb964036a1fd7874a242ce42d3e06a4979a26d22a12f965357d571c40966cd457736d3c430a5421f
+  languageName: node
+  linkType: hard
+
+"@rc-component/trigger@npm:^1.5.0":
+  version: 1.18.3
+  resolution: "@rc-component/trigger@npm:1.18.3"
+  dependencies:
+    "@babel/runtime": ^7.23.2
+    "@rc-component/portal": ^1.1.0
+    classnames: ^2.3.2
+    rc-motion: ^2.0.0
+    rc-resize-observer: ^1.3.1
+    rc-util: ^5.38.0
+  peerDependencies:
+    react: ">=16.9.0"
+    react-dom: ">=16.9.0"
+  checksum: 272098e67b4c09e8ee8f4fa2e55054c05f2ea5196e26859a2fd1dfb63ee4f02e4ca7b60d15704defb59b34151f042ff906099aee20d67a01066d2f0b76dd0c58
   languageName: node
   linkType: hard
 
@@ -1246,6 +1277,13 @@ __metadata:
   version: 2.0.0
   resolution: "chownr@npm:2.0.0"
   checksum: c57cf9dd0791e2f18a5ee9c1a299ae6e801ff58fee96dc8bfd0dcb4738a6ce58dd252a3605b1c93c6418fe4f9d5093b28ffbf4d66648cb2a9c67eaef9679be2f
+  languageName: node
+  linkType: hard
+
+"classnames@npm:2.x, classnames@npm:^2.2.1, classnames@npm:^2.2.6, classnames@npm:^2.3.2":
+  version: 2.5.1
+  resolution: "classnames@npm:2.5.1"
+  checksum: da424a8a6f3a96a2e87d01a432ba19315503294ac7e025f9fece656db6b6a0f7b5003bb1fbb51cbb0d9624d964f1b9bb35a51c73af9b2434c7b292c42231c1e5
   languageName: node
   linkType: hard
 
@@ -2114,6 +2152,7 @@ __metadata:
     lowcoder-cli: ^0.0.30
     lowcoder-sdk: ^2.3.1
     prop-types: ^15.8.1
+    rc-select: ^14.11.0
     react: 18
     react-dom: 18
     react-resize-detector: ^10.0.1
@@ -2526,6 +2565,96 @@ __metadata:
   languageName: node
   linkType: hard
 
+"rc-motion@npm:^2.0.0, rc-motion@npm:^2.0.1":
+  version: 2.9.0
+  resolution: "rc-motion@npm:2.9.0"
+  dependencies:
+    "@babel/runtime": ^7.11.1
+    classnames: ^2.2.1
+    rc-util: ^5.21.0
+  peerDependencies:
+    react: ">=16.9.0"
+    react-dom: ">=16.9.0"
+  checksum: 6c7c211a62896a2c443c43f27d13ec84c832884ec1860a40025f6270321e4e8c8a7abaf99d60a09d6e5cadc112e3d9787e0c58970eb69b0bb798eaa6be81dcf5
+  languageName: node
+  linkType: hard
+
+"rc-overflow@npm:^1.3.1":
+  version: 1.3.2
+  resolution: "rc-overflow@npm:1.3.2"
+  dependencies:
+    "@babel/runtime": ^7.11.1
+    classnames: ^2.2.1
+    rc-resize-observer: ^1.0.0
+    rc-util: ^5.37.0
+  peerDependencies:
+    react: ">=16.9.0"
+    react-dom: ">=16.9.0"
+  checksum: 7041f72e881ead9a484bddb6b6b6eb94455911f6b1cb06b16979ffe7d79e81058d5c77d0ca3f14faa0d1e43c81b966e65ed11678d09c2344cfd84dcfd803e620
+  languageName: node
+  linkType: hard
+
+"rc-resize-observer@npm:^1.0.0, rc-resize-observer@npm:^1.3.1":
+  version: 1.4.0
+  resolution: "rc-resize-observer@npm:1.4.0"
+  dependencies:
+    "@babel/runtime": ^7.20.7
+    classnames: ^2.2.1
+    rc-util: ^5.38.0
+    resize-observer-polyfill: ^1.5.1
+  peerDependencies:
+    react: ">=16.9.0"
+    react-dom: ">=16.9.0"
+  checksum: e6ee24fd887ea440b07e0326c3fc60b240274fa43ea87cf8f86ca9e0741a2c817e47a182f336b00d7246b4fd21b3536f4d3aacd7f0db5ae673f106630cd348ba
+  languageName: node
+  linkType: hard
+
+"rc-select@npm:^14.11.0":
+  version: 14.11.0
+  resolution: "rc-select@npm:14.11.0"
+  dependencies:
+    "@babel/runtime": ^7.10.1
+    "@rc-component/trigger": ^1.5.0
+    classnames: 2.x
+    rc-motion: ^2.0.1
+    rc-overflow: ^1.3.1
+    rc-util: ^5.16.1
+    rc-virtual-list: ^3.5.2
+  peerDependencies:
+    react: "*"
+    react-dom: "*"
+  checksum: e3258545a64c687b2e3c456edf8c426961cf69823d67972580db49f470cd5bd11a7e1a55033c206b542c5c130ee45a2dd2436a9dae00c6528190d170eef6ff31
+  languageName: node
+  linkType: hard
+
+"rc-util@npm:^5.16.1, rc-util@npm:^5.21.0, rc-util@npm:^5.24.4, rc-util@npm:^5.36.0, rc-util@npm:^5.37.0, rc-util@npm:^5.38.0":
+  version: 5.38.2
+  resolution: "rc-util@npm:5.38.2"
+  dependencies:
+    "@babel/runtime": ^7.18.3
+    react-is: ^18.2.0
+  peerDependencies:
+    react: ">=16.9.0"
+    react-dom: ">=16.9.0"
+  checksum: 104a76bb013e0ebe456e6ad6a0af0abe2e10a782f9e8a7802709f254ff5181142cc5c4c877cc05e4faccf2a30b94cc053d211dda88d8a29b118baceacc128c5a
+  languageName: node
+  linkType: hard
+
+"rc-virtual-list@npm:^3.5.2":
+  version: 3.11.4
+  resolution: "rc-virtual-list@npm:3.11.4"
+  dependencies:
+    "@babel/runtime": ^7.20.0
+    classnames: ^2.2.6
+    rc-resize-observer: ^1.0.0
+    rc-util: ^5.36.0
+  peerDependencies:
+    react: ">=16.9.0"
+    react-dom: ">=16.9.0"
+  checksum: 439935867bd1831f56d316c6afacb47c201702f678cf0d79437c92368a817bb631354087dede5215ccce1052c5318125d912e0ef07b22d2d9624f368e3062256
+  languageName: node
+  linkType: hard
+
 "react-base16-styling@npm:^0.6.0":
   version: 0.6.0
   resolution: "react-base16-styling@npm:0.6.0"
@@ -2554,6 +2683,13 @@ __metadata:
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
   checksum: f7a19ac3496de32ca9ae12aa030f00f14a3d45374f1ceca0af707c831b2a6098ef0d6bdae51bd437b0a306d7f01d4677fcc8de7c0d331eb47ad0f46130e53c5f
+  languageName: node
+  linkType: hard
+
+"react-is@npm:^18.2.0":
+  version: 18.2.0
+  resolution: "react-is@npm:18.2.0"
+  checksum: e72d0ba81b5922759e4aff17e0252bd29988f9642ed817f56b25a3e217e13eea8a7f2322af99a06edb779da12d5d636e9fda473d620df9a3da0df2a74141d53e
   languageName: node
   linkType: hard
 
@@ -2624,6 +2760,13 @@ __metadata:
   version: 0.14.1
   resolution: "regenerator-runtime@npm:0.14.1"
   checksum: 9f57c93277b5585d3c83b0cf76be47b473ae8c6d9142a46ce8b0291a04bb2cf902059f0f8445dcabb3fb7378e5fe4bb4ea1e008876343d42e46d3b484534ce38
+  languageName: node
+  linkType: hard
+
+"resize-observer-polyfill@npm:^1.5.1":
+  version: 1.5.1
+  resolution: "resize-observer-polyfill@npm:1.5.1"
+  checksum: 57e7f79489867b00ba43c9c051524a5c8f162a61d5547e99333549afc23e15c44fd43f2f318ea0261ea98c0eb3158cca261e6f48d66e1ed1cd1f340a43977094
   languageName: node
   linkType: hard
 
