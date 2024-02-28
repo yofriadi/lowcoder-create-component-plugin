@@ -1,5 +1,3 @@
-import CustomComp from "./CustomComp";
+import StoneParcelComp from "./StoneParcelComp";
 
-export default {
-  customComp: CustomComp,
-};
+export default { stone_parcel_input: StoneParcelComp };
