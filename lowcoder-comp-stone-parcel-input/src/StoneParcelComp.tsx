@@ -6,7 +6,6 @@ import {
   UICompBuilder,
   Section,
 } from "lowcoder-sdk";
-import { PlusOutlined } from "@ant-design/icons";
 import { useResizeDetector } from "react-resize-detector";
 import styled from "styled-components";
 
@@ -69,13 +68,13 @@ export default new UICompBuilder(
     };
     data: any[] | null | undefined;
     autoHeight: boolean;
+    autoWidth: boolean;
   }) => {
-    const [parcelValues, setParcelValues] = useState([
-      { parcel: "", pieces: 0, carat: 0 },
-    ]);
+    const value = { parcel: "", pieces: 0, carat: 0 };
+    const [parcelValues, setParcelValues] = useState([{ ...value }]);
     let handleChange = (i: number) => {
       if (i === parcelValues.length - 1) {
-        setParcelValues([...parcelValues, { parcel: "", pieces: 0, carat: 0 }]);
+        setParcelValues([...parcelValues, { ...value }]);
       }
     };
 
@@ -99,22 +98,7 @@ export default new UICompBuilder(
     });
 
     return (
-      /* <div
-        className={styles.wrapper}
-        style={{
-          height: "100%",
-          width: "100%",
-          backgroundColor: `${props.styles.backgroundColor}`,
-          borderColor: `${props.styles.border}`,
-          borderRadius: `${props.styles.radius}`,
-          borderWidth: `${props.styles.borderWidth}`,
-          margin: `${props.styles.margin}`,
-          padding: `${props.styles.padding}`,
-          fontSize: `${props.styles.textSize}`,
-        }}
-        ref={conRef}
-      > */
-      <Container $styles={props.styles}>
+      <Container ref={conRef} $styles={props.styles}>
         {parcelValues.map((el, i) => (
           <StoneParcel
             key={i}
@@ -123,11 +107,6 @@ export default new UICompBuilder(
             onHandleChange={handleChange}
           />
         ))}
-        {/* <antd.Button
-          type="primary"
-          shape="circle"
-          icon={<PlusOutlined />}
-        ></antd.Button> */}
       </Container>
     );
   },
@@ -145,20 +124,15 @@ export default new UICompBuilder(
   .build();
 
 const Container = styled.div<{ $styles: any }>`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   height: 100%;
   width: 100%;
-  padding: 5px;
   margin: ${(props) => props.$styles.margin};
   padding: ${(props) => props.$styles.padding};
   font-size: ${(props) => props.$styles.textSize};
-  /*background-color: ${(props) => props.$styles.backgroundColor};
+  background-color: ${(props) => props.$styles.backgroundColor};
   border-color: ${(props) => props.$styles.border};
   border-radius: ${(props) => props.$styles.radius};
-  border-width: ${(props) => props.$styles.borderWidth};*/
-  border: 1px solid #ddd;
-  background-color: white;
+  border-width: ${(props) => props.$styles.borderWidth};
+  /* border: 1px solid #ddd;
+  background-color: white; */
 `;

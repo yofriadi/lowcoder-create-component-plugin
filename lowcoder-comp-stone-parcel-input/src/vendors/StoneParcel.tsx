@@ -101,10 +101,14 @@ const Row = styled.div`
   width: 100%;
   flex-grow: 1;
   width: 100%;
-  margin: 7px;
+  margin: 11px;
   height: calc(100% - 4px);
   align-items: start;
   flex-shrink: 0;
+
+  span:nth-child(n + 2) {
+    display: none;
+  }
 `;
 
 const Wrapper = styled.div`
@@ -119,10 +123,6 @@ const Label = styled.span`
 
   &:hover {
     cursor: default;
-  }
-
-  &:nth-child(n + 2) {
-    display: none;
   }
 
   /**
