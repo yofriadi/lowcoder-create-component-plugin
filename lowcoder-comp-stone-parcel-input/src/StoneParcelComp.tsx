@@ -96,36 +96,15 @@ export default new UICompBuilder(
         if (!container || !width || !height) return;
 
         if (props.autoHeight) {
-          setDimensions({
-            width,
-            height: dimensions.height,
-          });
+          setDimensions({ width, height: dimensions.height });
           return;
         }
 
-        setDimensions({
-          width,
-          height,
-        });
+        setDimensions({ width, height });
       },
     });
 
     return (
-      /* <div
-        ref={conRef}
-        className={styles.wrapper}
-        style={{
-          height: `100%`,
-          width: `100%`,
-          backgroundColor: `${props.styles.backgroundColor}`,
-          borderColor: `${props.styles.border}`,
-          borderRadius: `${props.styles.radius}`,
-          borderWidth: `${props.styles.borderWidth}`,
-          margin: `${props.styles.margin}`,
-          padding: `${props.styles.padding}`,
-          fontSize: `${props.styles.textSize}`,
-        }}
-      > */
       <Container $styles={props.styles} ref={conRef}>
         {formValues.map((el, i) => (
           <Wrapper key={i}>
