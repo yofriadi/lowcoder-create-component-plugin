@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  antd,
   styleControl,
   withDefault,
   AutoHeightControl,
@@ -12,6 +11,7 @@ import { useResizeDetector } from "react-resize-detector";
 import styled from "styled-components";
 
 import { trans } from "./i18n/comps";
+import { StoneParcel } from "./vendors";
 
 export const CompStyles = [
   {
@@ -51,11 +51,6 @@ export const CompStyles = [
   },
 ] as const;
 
-interface Option {
-  value: string;
-  label: string;
-}
-
 export default new UICompBuilder(
   {
     styles: styleControl(CompStyles),
@@ -75,12 +70,12 @@ export default new UICompBuilder(
     data: any[] | null | undefined;
     autoHeight: boolean;
   }) => {
-    const [formValues, setFormValues] = useState([
+    const [parcelValues, setParcelValues] = useState([
       { parcel: "", pieces: 0, carat: 0 },
     ]);
     let handleChange = (i: number) => {
-      if (i === formValues.length - 1 && i >= 0) {
-        setFormValues([...formValues, { parcel: "", pieces: 0, carat: 0 }]);
+      if (i === parcelValues.length - 1) {
+        setParcelValues([...parcelValues, { parcel: "", pieces: 0, carat: 0 }]);
       }
     };
 
@@ -104,82 +99,35 @@ export default new UICompBuilder(
     });
 
     return (
-      <Container $styles={props.styles} ref={conRef}>
-        {formValues.map((el, i) => (
-          <Row key={i}>
-            <Wrapper>
-              <Label>Parcel</Label>
-              <antd.Select
-                showSearch
-                allowClear
-                style={{ width: 200, margin: 4 }}
-                placeholder="Search to Select"
-                optionFilterProp="children"
-                filterOption={(input: string, option: Option): boolean =>
-                  (option?.label ?? "").includes(input)
-                }
-                filterSort={(optionA: Option, optionB: Option) =>
-                  (optionA?.label ?? "")
-                    .toLowerCase()
-                    .localeCompare((optionB?.label ?? "").toLowerCase())
-                }
-                defaultValue={el.parcel}
-                onSelect={() => handleChange(i)}
-                options={[
-                  {
-                    value: "1",
-                    label: "Not Identified",
-                  },
-                  {
-                    value: "2",
-                    label: "Closed",
-                  },
-                  {
-                    value: "3",
-                    label: "Communicated",
-                  },
-                  {
-                    value: "4",
-                    label: "Identified",
-                  },
-                  {
-                    value: "5",
-                    label: "Resolved",
-                  },
-                  {
-                    value: "6",
-                    label: "Cancelled",
-                  },
-                ]}
-              />
-            </Wrapper>
-            <Wrapper>
-              <Label>Pieces</Label>
-              <antd.InputNumber
-                style={{ margin: 3 }}
-                min={1}
-                max={10}
-                defaultValue={el.pieces}
-                onFocus={() => handleChange(i)}
-              />
-            </Wrapper>
-            <Wrapper>
-              <Label>Carat</Label>
-              <antd.InputNumber
-                style={{ margin: 3 }}
-                min={1}
-                max={10}
-                defaultValue={el.carat}
-                onFocus={() => handleChange(i)}
-              />
-            </Wrapper>
-          </Row>
+      /* <div
+        className={styles.wrapper}
+        style={{
+          height: "100%",
+          width: "100%",
+          backgroundColor: `${props.styles.backgroundColor}`,
+          borderColor: `${props.styles.border}`,
+          borderRadius: `${props.styles.radius}`,
+          borderWidth: `${props.styles.borderWidth}`,
+          margin: `${props.styles.margin}`,
+          padding: `${props.styles.padding}`,
+          fontSize: `${props.styles.textSize}`,
+        }}
+        ref={conRef}
+      > */
+      <Container $styles={props.styles}>
+        {parcelValues.map((el, i) => (
+          <StoneParcel
+            key={i}
+            i={i}
+            parcelValue={el}
+            onHandleChange={handleChange}
+          />
         ))}
-        <antd.Button
+        {/* <antd.Button
           type="primary"
           shape="circle"
           icon={<PlusOutlined />}
-        ></antd.Button>
+        ></antd.Button> */}
       </Container>
     );
   },
@@ -197,8 +145,12 @@ export default new UICompBuilder(
   .build();
 
 const Container = styled.div<{ $styles: any }>`
-  height: auto;
-  width: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
   padding: 5px;
   margin: ${(props) => props.$styles.margin};
   padding: ${(props) => props.$styles.padding};
@@ -209,45 +161,4 @@ const Container = styled.div<{ $styles: any }>`
   border-width: ${(props) => props.$styles.borderWidth};*/
   border: 1px solid #ddd;
   background-color: white;
-`;
-
-const Row = styled.div`
-  display: flex;
-  height: 100%;
-  flex-grow: 1;
-  width: 100%;
-  margin-top: 4px;
-  height: calc(100% - 4px);
-  align-items: start;
-  flex-shrink: 0;
-`;
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Label = styled.span`
-  user-select: none;
-  font-size: 13px;
-  color: #222222;
-
-  &:hover {
-    cursor: default;
-  }
-
-  /**
-   * add this for tooltip
-  background-image: linear-gradient(to right, #8b8fa3 50%, #fff 0%); */
-  background-size: 4px 1px;
-  background-position: 5px bottom;
-  background-repeat: repeat-x;
-  padding-left: 5px;
-  padding-bottom: 2.5px !important;
-  width: fit-content;
-  user-select: text;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  display: inline-block;
 `;

@@ -24,10 +24,10 @@
   "lowcoder": {
     "description": "",
     "comps": {
-      "stone_parcel_input": {
-        "name": "Stone Parcel Demo",
+      "stone_parcel": {
+        "name": "Stone Parcel",
         "icon": "./icons/hills.svg",
-        "description": "Stone Parcel Input Plugin Demo Component"
+        "description": "Stone Parcel Input Plugin Component"
       }
     }
   },

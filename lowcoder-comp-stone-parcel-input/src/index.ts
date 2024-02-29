@@ -1,3 +1,3 @@
 import StoneParcelComp from "./StoneParcelComp";
 
-export default { stone_parcel_input: StoneParcelComp };
+export default { stone_parcel: StoneParcelComp };
