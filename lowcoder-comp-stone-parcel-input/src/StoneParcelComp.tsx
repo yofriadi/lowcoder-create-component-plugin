@@ -9,6 +9,7 @@ import {
 } from "lowcoder-sdk";
 import { PlusOutlined } from "@ant-design/icons";
 import { useResizeDetector } from "react-resize-detector";
+import styled from "styled-components";
 
 import { trans } from "./i18n/comps";
 import styles from "./styles.module.css";
@@ -64,13 +65,13 @@ export default new UICompBuilder(
   (props: {
     onEvent: any;
     styles: {
-      backgroundColor: any;
-      border: any;
-      radius: any;
-      borderWidth: any;
-      margin: any;
-      padding: any;
-      textSize: any;
+      backgroundColor: string;
+      border: string;
+      radius: string;
+      borderWidth: string;
+      margin: string;
+      padding: string;
+      textSize: string;
     };
     data: any[] | null | undefined;
     autoHeight: boolean;
@@ -110,7 +111,7 @@ export default new UICompBuilder(
     });
 
     return (
-      <div
+      /* <div
         ref={conRef}
         className={styles.wrapper}
         style={{
@@ -124,9 +125,10 @@ export default new UICompBuilder(
           padding: `${props.styles.padding}`,
           fontSize: `${props.styles.textSize}`,
         }}
-      >
+      > */
+      <Container $styles={props.styles} ref={conRef}>
         {formValues.map((el, i) => (
-          <div key={i}>
+          <Wrapper key={i}>
             <antd.Select
               showSearch
               style={{ width: 200, margin: 4 }}
@@ -183,14 +185,14 @@ export default new UICompBuilder(
               defaultValue={el.carat}
               onFocus={() => handleChange(i)}
             />
-          </div>
+          </Wrapper>
         ))}
         <antd.Button
           type="primary"
           shape="circle"
           icon={<PlusOutlined />}
         ></antd.Button>
-      </div>
+      </Container>
     );
   },
 )
@@ -205,3 +207,24 @@ export default new UICompBuilder(
     );
   })
   .build();
+
+const Container = styled.div<{ $styles: any }>`
+  height: auto;
+  width: auto;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  margin: ${(props) => props.$styles.margin};
+  padding: ${(props) => props.$styles.padding};
+  fontsize: ${(props) => props.$styles.textSize};
+  /* backgroundcolor: ${(props) => props.$styles.backgroundColor};
+  bordercolor: ${(props) => props.$styles.border};
+  borderradius: ${(props) => props.$styles.radius};
+  borderwidth: ${(props) => props.$styles.borderWidth}; */
+  border: 1px solid #dddddd;
+  background-color: white;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+`;
