@@ -180,6 +180,17 @@ const ChildrenWrapper = styled.div`
   min-width: calc(30% - 8px);
 `;
 
+const Label = styled.span<{ $border: boolean }>`
+  ${labelCss};
+  ${(props) => props.$border && UnderlineCss};
+  width: fit-content;
+  user-select: text;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: inline-block;
+`;
+
 function getLabelWidth(width: number, widthUnit: string): string {
   if (width <= 0 || isNaN(width)) {
     return "0%";

@@ -10,7 +10,6 @@ import {
 import { PlusOutlined } from "@ant-design/icons";
 import { useResizeDetector } from "react-resize-detector";
 
-import { LabelControl } from "./StoneParcelControl";
 import { trans } from "./i18n/comps";
 import styles from "./styles.module.css";
 
@@ -61,7 +60,6 @@ export default new UICompBuilder(
   {
     styles: styleControl(CompStyles),
     autoHeight: withDefault(AutoHeightControl, "auto"),
-    label: LabelControl,
   },
   (props: {
     onEvent: any;
@@ -77,6 +75,15 @@ export default new UICompBuilder(
     data: any[] | null | undefined;
     autoHeight: boolean;
   }) => {
+    const [formValues, setFormValues] = useState([
+      { parcel: "", pieces: 0, carat: 0 },
+    ]);
+    let handleChange = (i: number) => {
+      if (i === formValues.length - 1 && i >= 0) {
+        setFormValues([...formValues, { parcel: "", pieces: 0, carat: 0 }]);
+      }
+    };
+
     const [dimensions, setDimensions] = useState({ width: 480, height: 280 });
     const {
       width,
@@ -118,48 +125,66 @@ export default new UICompBuilder(
           fontSize: `${props.styles.textSize}`,
         }}
       >
-        <antd.Select
-          showSearch
-          style={{ width: 200, margin: 4 }}
-          placeholder="Search to Select"
-          optionFilterProp="children"
-          filterOption={(input: string, option: Option): boolean =>
-            (option?.label ?? "").includes(input)
-          }
-          filterSort={(optionA: Option, optionB: Option) =>
-            (optionA?.label ?? "")
-              .toLowerCase()
-              .localeCompare((optionB?.label ?? "").toLowerCase())
-          }
-          options={[
-            {
-              value: "1",
-              label: "Not Identified",
-            },
-            {
-              value: "2",
-              label: "Closed",
-            },
-            {
-              value: "3",
-              label: "Communicated",
-            },
-            {
-              value: "4",
-              label: "Identified",
-            },
-            {
-              value: "5",
-              label: "Resolved",
-            },
-            {
-              value: "6",
-              label: "Cancelled",
-            },
-          ]}
-        />
-        <antd.InputNumber style={{ margin: 3 }} min={1} max={10} />
-        <antd.InputNumber style={{ margin: 3 }} min={1} max={10} />
+        {formValues.map((el, i) => (
+          <div key={i}>
+            <antd.Select
+              showSearch
+              style={{ width: 200, margin: 4 }}
+              placeholder="Search to Select"
+              optionFilterProp="children"
+              filterOption={(input: string, option: Option): boolean =>
+                (option?.label ?? "").includes(input)
+              }
+              filterSort={(optionA: Option, optionB: Option) =>
+                (optionA?.label ?? "")
+                  .toLowerCase()
+                  .localeCompare((optionB?.label ?? "").toLowerCase())
+              }
+              defaultValue={el.parcel}
+              onFocus={() => handleChange(i)}
+              options={[
+                {
+                  value: "1",
+                  label: "Not Identified",
+                },
+                {
+                  value: "2",
+                  label: "Closed",
+                },
+                {
+                  value: "3",
+                  label: "Communicated",
+                },
+                {
+                  value: "4",
+                  label: "Identified",
+                },
+                {
+                  value: "5",
+                  label: "Resolved",
+                },
+                {
+                  value: "6",
+                  label: "Cancelled",
+                },
+              ]}
+            />
+            <antd.InputNumber
+              style={{ margin: 3 }}
+              min={1}
+              max={10}
+              defaultValue={el.pieces}
+              onFocus={() => handleChange(i)}
+            />
+            <antd.InputNumber
+              style={{ margin: 3 }}
+              min={1}
+              max={10}
+              defaultValue={el.carat}
+              onFocus={() => handleChange(i)}
+            />
+          </div>
+        ))}
         <antd.Button
           type="primary"
           shape="circle"
