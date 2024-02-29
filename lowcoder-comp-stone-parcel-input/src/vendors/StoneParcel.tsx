@@ -19,7 +19,7 @@ function StoneParcel({
 }: {
   i: number;
   parcelValue: Element;
-  onHandleChange: (i: number) => void;
+  onHandleChange: (i: number, key: string, value: string | number) => void;
 }) {
   return (
     <Row>
@@ -40,7 +40,7 @@ function StoneParcel({
               .localeCompare((optB?.label ?? "").toLowerCase())
           }
           defaultValue={parcelValue.parcel}
-          onSelect={() => onHandleChange(i)}
+          onChange={(v: string) => onHandleChange(i, "parcel", v)}
           options={[
             {
               value: "1",
@@ -76,7 +76,7 @@ function StoneParcel({
           min={1}
           max={10}
           defaultValue={parcelValue.pieces}
-          onFocus={() => onHandleChange(i)}
+          onChange={(v: number) => onHandleChange(i, "pieces", v)}
         />
       </Wrapper>
       <Wrapper>
@@ -86,7 +86,7 @@ function StoneParcel({
           min={1}
           max={10}
           defaultValue={parcelValue.carat}
-          onFocus={() => onHandleChange(i)}
+          onChange={(v: number) => onHandleChange(i, "carat", v)}
         />
       </Wrapper>
     </Row>
@@ -105,10 +105,6 @@ const Row = styled.div`
   height: calc(100% - 4px);
   align-items: start;
   flex-shrink: 0;
-
-  span:nth-child(n + 2) {
-    display: none;
-  }
 `;
 
 const Wrapper = styled.div`

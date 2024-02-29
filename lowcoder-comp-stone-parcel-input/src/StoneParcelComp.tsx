@@ -68,13 +68,18 @@ export default new UICompBuilder(
     };
     data: any[] | null | undefined;
     autoHeight: boolean;
-    autoWidth: boolean;
   }) => {
-    const value = { parcel: "", pieces: 0, carat: 0 };
-    const [parcelValues, setParcelValues] = useState([{ ...value }]);
-    let handleChange = (i: number) => {
-      if (i === parcelValues.length - 1) {
-        setParcelValues([...parcelValues, { ...value }]);
+    const initvalue = { parcel: "", pieces: 0, carat: 0 };
+    const [parcelValues, setParcelValues] = useState([{ ...initvalue }]);
+    let onHandleChange = (id: number, key: string, val: string | number) => {
+      parcelValues.map((v, i) => {
+        if (i === id) {
+          parcelValues[i] = { ...v, [key]: val };
+          setParcelValues(parcelValues);
+        }
+      });
+      if (id === parcelValues.length - 1) {
+        setParcelValues([...parcelValues, { ...initvalue }]);
       }
     };
 
@@ -104,7 +109,7 @@ export default new UICompBuilder(
             key={i}
             i={i}
             parcelValue={el}
-            onHandleChange={handleChange}
+            onHandleChange={onHandleChange}
           />
         ))}
       </Container>
@@ -135,4 +140,8 @@ const Container = styled.div<{ $styles: any }>`
   border-width: ${(props) => props.$styles.borderWidth};
   /* border: 1px solid #ddd;
   background-color: white; */
+
+  div > div > div > span:nth-type(n + 2) {
+    display: none;
+  }
 `;
