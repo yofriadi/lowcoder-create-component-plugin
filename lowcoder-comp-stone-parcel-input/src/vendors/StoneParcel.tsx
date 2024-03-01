@@ -1,15 +1,10 @@
 import { antd } from "lowcoder-sdk";
 import styled from "styled-components";
+import { StoneValue } from "../StoneParcelComp";
 
 interface Option {
   value: string;
   label: string;
-}
-
-interface Element {
-  parcel: string;
-  pieces: number;
-  carat: number;
 }
 
 function StoneParcel({
@@ -18,8 +13,9 @@ function StoneParcel({
   onHandleChange,
 }: {
   i: number;
-  parcelValue: Element;
+  parcelValue: StoneValue;
   onHandleChange: (i: number, key: string, value: string | number) => void;
+  skipRedraw: () => void;
 }) {
   return (
     <Row>
