@@ -1,4 +1,6 @@
+import { useState, useEffect } from "react";
 import { antd } from "lowcoder-sdk";
+import { CloseOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import { StoneValue } from "../StoneParcelComp";
 
@@ -8,14 +10,19 @@ interface Option {
 }
 
 function StoneParcel({
+  key,
   i,
-  parcelValue: parcelValue,
-  onHandleChange,
+  data,
+  parcelValue,
+  handleChange,
+  handleClose,
 }: {
+  key: number;
   i: number;
+  data: StoneValue[];
   parcelValue: StoneValue;
-  onHandleChange: (i: number, key: string, value: string | number) => void;
-  skipRedraw: () => void;
+  handleChange: (i: number, parcelValue: StoneValue) => void;
+  handleClose: (i: number) => void;
 }) {
   return (
     <Row>
@@ -35,31 +42,32 @@ function StoneParcel({
               .toLowerCase()
               .localeCompare((optB?.label ?? "").toLowerCase())
           }
-          defaultValue={parcelValue.parcel}
-          onChange={(v: string) => onHandleChange(i, "parcel", v)}
+          onChange={(v: string) =>
+            handleChange(i, { ...parcelValue, parcel: v })
+          }
           options={[
             {
-              value: "1",
+              value: "Not Identified",
               label: "Not Identified",
             },
             {
-              value: "2",
+              value: "Closed",
               label: "Closed",
             },
             {
-              value: "3",
+              value: "Communicated",
               label: "Communicated",
             },
             {
-              value: "4",
+              value: "Identified",
               label: "Identified",
             },
             {
-              value: "5",
+              value: "Resolved",
               label: "Resolved",
             },
             {
-              value: "6",
+              value: "Cancelled",
               label: "Cancelled",
             },
           ]}
@@ -72,7 +80,9 @@ function StoneParcel({
           min={1}
           max={10}
           defaultValue={parcelValue.pieces}
-          onChange={(v: number) => onHandleChange(i, "pieces", v)}
+          onChange={(v: number) =>
+            handleChange(i, { ...parcelValue, pieces: v })
+          }
         />
       </Wrapper>
       <Wrapper>
@@ -82,9 +92,20 @@ function StoneParcel({
           min={1}
           max={10}
           defaultValue={parcelValue.carat}
-          onChange={(v: number) => onHandleChange(i, "carat", v)}
+          onChange={(v: number) =>
+            handleChange(i, { ...parcelValue, carat: v })
+          }
         />
       </Wrapper>
+      <antd.Button
+        type="primary"
+        shape="circle"
+        icon={<CloseOutlined />}
+        onClick={() => {
+          handleClose(key);
+          data.splice(i, 1);
+        }}
+      ></antd.Button>
     </Row>
   );
 }

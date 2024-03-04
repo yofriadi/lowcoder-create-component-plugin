@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
+  antd,
   styleControl,
   withDefault,
   AutoHeightControl,
@@ -12,6 +13,7 @@ import {
   eventHandlerControl,
   NameConfig,
 } from "lowcoder-sdk";
+import { PlusOutlined } from "@ant-design/icons";
 import { useResizeDetector } from "react-resize-detector";
 import styled from "styled-components";
 
@@ -62,14 +64,23 @@ export interface StoneValue {
   carat: number;
 }
 
-let StoneParcelComp = (function () {
-  var _skipRedraw = false;
-  const skipRedraw = function () {
-    var ret = _skipRedraw;
-    _skipRedraw = false;
-    return ret;
+interface Props {
+  onEvent: any;
+  styles: {
+    backgroundColor: string;
+    border: string;
+    radius: string;
+    borderWidth: string;
+    margin: string;
+    padding: string;
+    textSize: string;
   };
-  const childrenMap = {
+  data: StoneValue[];
+  autoHeight: boolean;
+}
+
+let StoneParcelComp = new UICompBuilder(
+  {
     data: jsonControl(toJSONObjectArray, i18nObjs.defaultData),
     styles: styleControl(CompStyles),
     autoHeight: withDefault(AutoHeightControl, "auto"),
@@ -80,93 +91,88 @@ let StoneParcelComp = (function () {
         description: "Triggers when bpmn data changes",
       },
     ] as const),
-  };
-  return new UICompBuilder(
-    childrenMap,
-    (props: {
-      onEvent: any;
-      styles: {
-        backgroundColor: string;
-        border: string;
-        radius: string;
-        borderWidth: string;
-        margin: string;
-        padding: string;
-        textSize: string;
-      };
-      data: StoneValue[] | null | undefined;
-      autoHeight: boolean;
-    }) => {
-      const initvalue: StoneValue = { parcel: "", pieces: 0, carat: 0 };
-      const [parcelValues, setParcelValues] = useState([{ ...initvalue }]);
-      let handleChange = (id: number, key: string, val: string | number) => {
-        _skipRedraw = true;
-        props.onEvent("change");
-
-        parcelValues.map((v, i) => {
-          if (i === id) {
-            parcelValues[i] = { ...v, [key]: val };
-            setParcelValues(parcelValues);
-          }
-        });
-
-        if (id === parcelValues.length - 1) {
-          setParcelValues([...parcelValues, { ...initvalue }]);
-        }
-      };
-
-      const [dimensions, setDimensions] = useState({ width: 480, height: 280 });
-      const {
-        width,
-        height,
-        ref: conRef,
-      } = useResizeDetector({
-        onResize: () => {
-          const container = conRef.current;
-          if (!container || !width || !height) return;
-
-          if (props.autoHeight) {
-            setDimensions({ width, height: dimensions.height });
-            return;
-          }
-
-          setDimensions({ width, height });
-        },
+  },
+  (props: Props) => {
+    const initValue: StoneValue = { parcel: "", pieces: 0, carat: 0 };
+    const [parcelValues, setParcelValues] = useState<Array<StoneValue>>([
+      { ...initValue },
+    ]);
+    const handleChange = (key: number, value: StoneValue) => {
+      setParcelValues((parcelValues: StoneValue[]): StoneValue[] => {
+        return parcelValues.map(
+          (parcelValue: StoneValue, i: number): StoneValue => {
+            if (i === key) {
+              return value;
+            }
+            return parcelValue;
+          },
+        );
       });
+    };
+    const handleClose = (i: number) => {
+      setParcelValues(parcelValues.toSpliced(i, 1));
+    };
+    const handleAdd = () => {
+      setParcelValues([...parcelValues, initValue]);
+      props.data[parcelValues.length] = initValue;
+    };
 
-      return (
-        <Container ref={conRef} $styles={props.styles}>
-          {parcelValues.map((el, i) => (
-            <StoneParcel
-              key={i}
-              i={i}
-              parcelValue={el}
-              onHandleChange={handleChange}
-              skipRedraw={skipRedraw}
-            />
-          ))}
-        </Container>
-      );
-    },
-  )
-    .setPropertyViewFn((children: any) => {
-      return (
-        <>
-          <Section name="Basic">
-            {children.data.propertyView({ label: "Data" })}
-          </Section>
-          <Section name="Interaction">
-            {children.onEvent.propertyView()}
-          </Section>
-          <Section name="Styles">
-            {children.styles.getPropertyView()}
-            {children.autoHeight.getPropertyView()}
-          </Section>
-        </>
-      );
-    })
-    .build();
-})();
+    const [dimensions, setDimensions] = useState({ width: 480, height: 280 });
+    const {
+      width,
+      height,
+      ref: conRef,
+    } = useResizeDetector({
+      onResize: () => {
+        const container = conRef.current;
+        if (!container || !width || !height) return;
+
+        if (props.autoHeight) {
+          setDimensions({ width, height: dimensions.height });
+          return;
+        }
+
+        setDimensions({ width, height });
+      },
+    });
+
+    return (
+      <Container ref={conRef} $styles={props.styles}>
+        {parcelValues.map((parcelValue, i) => (
+          <StoneParcel
+            key={i}
+            i={i}
+            data={props.data}
+            parcelValue={parcelValue}
+            handleChange={handleChange}
+            handleClose={handleClose}
+          />
+        ))}
+        <antd.Button
+          type="primary"
+          shape="circle"
+          icon={<PlusOutlined />}
+          onClick={handleAdd()}
+        ></antd.Button>
+      </Container>
+    );
+  },
+)
+  .setPropertyViewFn((children: any) => {
+    return (
+      <>
+        <Section name="Basic">
+          {children.data.propertyView({ label: "Data" })}
+        </Section>
+        <Section name="Interaction">{children.onEvent.propertyView()}</Section>
+        <Section name="Styles">
+          {children.styles.getPropertyView()}
+          {children.autoHeight.getPropertyView()}
+        </Section>
+      </>
+    );
+  })
+  .build();
 
 StoneParcelComp = withMethodExposing(StoneParcelComp, [
   {
