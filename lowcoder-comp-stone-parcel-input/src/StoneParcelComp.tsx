@@ -112,10 +112,11 @@ let StoneParcelComp = new UICompBuilder(
     const handleClose = (i: number) => {
       setParcelValues(parcelValues.toSpliced(i, 1));
     };
-    const handleAdd = () => {
-      setParcelValues([...parcelValues, initValue]);
-      props.data[parcelValues.length] = initValue;
-    };
+    useEffect(() => {
+      parcelValues.map((parcelValue, i) => {
+        props.data[i] = parcelValue;
+      });
+    }, [props, parcelValues]);
 
     const [dimensions, setDimensions] = useState({ width: 480, height: 280 });
     const {
@@ -152,7 +153,7 @@ let StoneParcelComp = new UICompBuilder(
           type="primary"
           shape="circle"
           icon={<PlusOutlined />}
-          onClick={handleAdd()}
+          onClick={() => setParcelValues([...parcelValues, initValue])}
         ></antd.Button>
       </Container>
     );

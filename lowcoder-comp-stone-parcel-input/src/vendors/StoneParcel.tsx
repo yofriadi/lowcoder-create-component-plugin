@@ -101,10 +101,7 @@ function StoneParcel({
         type="primary"
         shape="circle"
         icon={<CloseOutlined />}
-        onClick={() => {
-          handleClose(key);
-          data.splice(i, 1);
-        }}
+        onClick={() => handleClose(key)}
       ></antd.Button>
     </Row>
   );
