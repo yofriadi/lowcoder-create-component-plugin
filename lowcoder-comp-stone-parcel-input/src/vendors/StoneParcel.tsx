@@ -9,15 +9,11 @@ interface Option {
 }
 
 function StoneParcel({
-  i,
-  parcelValue,
   handleChange,
   handleClose,
 }: {
-  i: number;
-  parcelValue: StoneValue;
-  handleChange: (i: number, parcelValue: StoneValue) => void;
-  handleClose: (i: number) => void;
+  handleChange: (k: string, v: string | number) => void;
+  handleClose: () => void;
 }) {
   return (
     <Row>
@@ -37,9 +33,7 @@ function StoneParcel({
               .toLowerCase()
               .localeCompare((optB?.label ?? "").toLowerCase())
           }
-          onChange={(v: string) =>
-            handleChange(i, { ...parcelValue, parcel: v })
-          }
+          onChange={(v: string) => handleChange("parcel", v)}
           options={[
             {
               value: "Not Identified",
@@ -74,10 +68,8 @@ function StoneParcel({
           style={{ margin: 3 }}
           min={1}
           max={10}
-          defaultValue={parcelValue.pieces}
-          onChange={(v: number) =>
-            handleChange(i, { ...parcelValue, pieces: v })
-          }
+          defaultValue={0}
+          onChange={(v: number) => handleChange("pieces", v)}
         />
       </Wrapper>
       <Wrapper>
@@ -86,17 +78,15 @@ function StoneParcel({
           style={{ margin: 3 }}
           min={1}
           max={10}
-          defaultValue={parcelValue.carat}
-          onChange={(v: number) =>
-            handleChange(i, { ...parcelValue, carat: v })
-          }
+          defaultValue={0}
+          onChange={(v: number) => handleChange("carat", v)}
         />
       </Wrapper>
       <antd.Button
         type="primary"
         shape="circle"
         icon={<CloseOutlined />}
-        onClick={() => handleClose(i)}
+        onClick={() => handleClose()}
       ></antd.Button>
     </Row>
   );

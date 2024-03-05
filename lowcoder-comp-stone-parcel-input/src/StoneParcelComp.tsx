@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   antd,
   styleControl,
@@ -97,9 +97,20 @@ let StoneParcelComp = new UICompBuilder(
       { ...initValue },
     ]);
 
+    useEffect(() => {
+      console.log(props.data.value);
+      if (props.data.length) {
+        setParcelValues(props.data.value);
+      }
+    }, [props.data, parcelValues]);
+
+    // convenient function, so that we don't need to pass index to child component
+    const closureHandleChange =
+      (i: number, parcelValue: StoneValue) => (k: string, v: string | number) =>
+        handleChange(i, { ...parcelValue, [k]: v });
     const handleChange = (key: number, value: StoneValue) => {
       setParcelValues((parcelValues: StoneValue[]): StoneValue[] => {
-        return parcelValues.map(
+        const newParcelValues = parcelValues.map(
           (parcelValue: StoneValue, i: number): StoneValue => {
             if (i === key) {
               return value;
@@ -107,14 +118,38 @@ let StoneParcelComp = new UICompBuilder(
             return parcelValue;
           },
         );
+        props.data.onChange(newParcelValues);
+        props.onEvent("change");
+        return newParcelValues;
       });
-      props.data.onChange(parcelValues);
-      props.onEvent("change");
     };
-    const handleClose = (i: number) => {
-      setParcelValues(parcelValues.toSpliced(i, 1));
-      props.data.onChange(parcelValues);
-      props.onEvent("change");
+
+    const handleAdd = () => {
+      setParcelValues((parcelValues: StoneValue[]) => {
+        const newParcelValues = [...parcelValues, initValue];
+        props.data.onChange(newParcelValues);
+        props.onEvent("change");
+        return newParcelValues;
+      });
+    };
+
+    // convenient function, so that we don't need to pass index to child component
+    const closureHandleClose = (i: number) => () => handleClose(i);
+    const handleClose = (key: number) => {
+      setParcelValues((parcelValues: StoneValue[]): StoneValue[] => {
+        const newParcelValues = parcelValues.reduce(
+          (acc: StoneValue[], curr: StoneValue, i: number): StoneValue[] => {
+            if (i !== key) {
+              acc.push(curr);
+            }
+            return acc;
+          },
+          [],
+        );
+        props.data.onChange(newParcelValues);
+        props.onEvent("change");
+        return newParcelValues;
+      });
     };
 
     const [dimensions, setDimensions] = useState({ width: 480, height: 280 });
@@ -141,17 +176,15 @@ let StoneParcelComp = new UICompBuilder(
         {parcelValues.map((parcelValue, i) => (
           <StoneParcel
             key={i}
-            i={i}
-            parcelValue={parcelValue}
-            handleChange={handleChange}
-            handleClose={handleClose}
+            handleChange={closureHandleChange(i, parcelValue)}
+            handleClose={closureHandleClose(i)}
           />
         ))}
         <antd.Button
           type="primary"
           shape="circle"
           icon={<PlusOutlined />}
-          onClick={() => setParcelValues([...parcelValues, initValue])}
+          onClick={handleAdd}
         ></antd.Button>
       </Container>
     );
