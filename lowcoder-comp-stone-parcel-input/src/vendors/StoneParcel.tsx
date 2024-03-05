@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { antd } from "lowcoder-sdk";
 import { CloseOutlined } from "@ant-design/icons";
 import styled from "styled-components";
@@ -10,16 +9,12 @@ interface Option {
 }
 
 function StoneParcel({
-  key,
   i,
-  data,
   parcelValue,
   handleChange,
   handleClose,
 }: {
-  key: number;
   i: number;
-  data: StoneValue[];
   parcelValue: StoneValue;
   handleChange: (i: number, parcelValue: StoneValue) => void;
   handleClose: (i: number) => void;
@@ -101,7 +96,7 @@ function StoneParcel({
         type="primary"
         shape="circle"
         icon={<CloseOutlined />}
-        onClick={() => handleClose(key)}
+        onClick={() => handleClose(i)}
       ></antd.Button>
     </Row>
   );

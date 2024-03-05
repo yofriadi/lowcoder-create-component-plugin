@@ -1,12 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   antd,
   styleControl,
   withDefault,
   AutoHeightControl,
   UICompBuilder,
-  toJSONObjectArray,
-  jsonControl,
+  jsonValueExposingStateControl,
   Section,
   withMethodExposing,
   withExposingConfigs,
@@ -75,20 +74,20 @@ interface Props {
     padding: string;
     textSize: string;
   };
-  data: StoneValue[];
+  data: any;
   autoHeight: boolean;
 }
 
 let StoneParcelComp = new UICompBuilder(
   {
-    data: jsonControl(toJSONObjectArray, i18nObjs.defaultData),
+    data: jsonValueExposingStateControl("data", i18nObjs.defaultData),
     styles: styleControl(CompStyles),
     autoHeight: withDefault(AutoHeightControl, "auto"),
     onEvent: eventHandlerControl([
       {
         label: "onChange",
         value: "change",
-        description: "Triggers when bpmn data changes",
+        description: "Triggers when data changes",
       },
     ] as const),
   },
@@ -97,6 +96,7 @@ let StoneParcelComp = new UICompBuilder(
     const [parcelValues, setParcelValues] = useState<Array<StoneValue>>([
       { ...initValue },
     ]);
+
     const handleChange = (key: number, value: StoneValue) => {
       setParcelValues((parcelValues: StoneValue[]): StoneValue[] => {
         return parcelValues.map(
@@ -108,15 +108,14 @@ let StoneParcelComp = new UICompBuilder(
           },
         );
       });
+      props.data.onChange(parcelValues);
+      props.onEvent("change");
     };
     const handleClose = (i: number) => {
       setParcelValues(parcelValues.toSpliced(i, 1));
+      props.data.onChange(parcelValues);
+      props.onEvent("change");
     };
-    useEffect(() => {
-      parcelValues.map((parcelValue, i) => {
-        props.data[i] = parcelValue;
-      });
-    }, [props, parcelValues]);
 
     const [dimensions, setDimensions] = useState({ width: 480, height: 280 });
     const {
@@ -143,7 +142,6 @@ let StoneParcelComp = new UICompBuilder(
           <StoneParcel
             key={i}
             i={i}
-            data={props.data}
             parcelValue={parcelValue}
             handleChange={handleChange}
             handleClose={handleClose}
@@ -163,7 +161,7 @@ let StoneParcelComp = new UICompBuilder(
     return (
       <>
         <Section name="Basic">
-          {children.data.propertyView({ label: "Data" })}
+          {children.data.propertyView({ label: "Initial Data" })}
         </Section>
         <Section name="Interaction">{children.onEvent.propertyView()}</Section>
         <Section name="Styles">

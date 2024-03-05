@@ -27,6 +27,10 @@
       "counter": {
         "name": "Counter",
         "icon": "./icons/demo-icon.png"
+      },
+      "json": {
+        "name": "JSON",
+        "icon": "./icons/demo-icon.png"
       }
     }
   },
