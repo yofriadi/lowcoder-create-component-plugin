@@ -1,7 +1,7 @@
 import { antd } from "lowcoder-sdk";
 import { CloseOutlined } from "@ant-design/icons";
 import styled from "styled-components";
-import { StoneValue } from "../StoneParcelComp";
+import { Props } from "../StoneParcelComp";
 
 interface Option {
   value: string;
@@ -9,16 +9,22 @@ interface Option {
 }
 
 function StoneParcel({
+  i,
+  isOnlyOne,
   handleChange,
   handleClose,
+  styles,
 }: {
+  i: number;
+  isOnlyOne: boolean;
   handleChange: (k: string, v: string | number) => void;
-  handleClose: () => void;
+  handleClose: (i: number) => void;
+  styles: Props["styles"];
 }) {
   return (
     <Row>
       <Wrapper>
-        <Label>Parcel</Label>
+        {i === 0 && <Label $styles={styles}>Parcel</Label>}
         <antd.Select
           showSearch
           allowClear
@@ -63,7 +69,7 @@ function StoneParcel({
         />
       </Wrapper>
       <Wrapper>
-        <Label>Pieces</Label>
+        {i === 0 && <Label $styles={styles}>Pieces</Label>}
         <antd.InputNumber
           style={{ margin: 3 }}
           min={1}
@@ -72,22 +78,29 @@ function StoneParcel({
           onChange={(v: number) => handleChange("pieces", v)}
         />
       </Wrapper>
+
       <Wrapper>
-        <Label>Carat</Label>
-        <antd.InputNumber
-          style={{ margin: 3 }}
-          min={1}
-          max={10}
-          defaultValue={0}
-          onChange={(v: number) => handleChange("carat", v)}
-        />
+        {i === 0 && <Label $styles={styles}>Carat</Label>}
+        <WrapperCloseButton>
+          <antd.InputNumber
+            style={{ margin: 3 }}
+            min={1}
+            max={10}
+            defaultValue={0}
+            onChange={(v: number) => handleChange("carat", v)}
+          />
+          {!isOnlyOne && (
+            <antd.Button
+              danger
+              size="small"
+              type="primary"
+              shape="circle"
+              icon={<CloseOutlined />}
+              onClick={() => handleClose(i)}
+            ></antd.Button>
+          )}
+        </WrapperCloseButton>
       </Wrapper>
-      <antd.Button
-        type="primary"
-        shape="circle"
-        icon={<CloseOutlined />}
-        onClick={() => handleClose()}
-      ></antd.Button>
     </Row>
   );
 }
@@ -96,14 +109,7 @@ export default StoneParcel;
 
 const Row = styled.div`
   display: flex;
-  height: 100%;
-  width: 100%;
-  flex-grow: 1;
-  width: 100%;
-  margin: 11px;
-  height: calc(100% - 4px);
-  align-items: start;
-  flex-shrink: 0;
+  align-items: center;
 `;
 
 const Wrapper = styled.div`
@@ -111,9 +117,14 @@ const Wrapper = styled.div`
   flex-direction: column;
 `;
 
-const Label = styled.span`
+const WrapperCloseButton = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Label = styled.span<{ $styles: any }>`
   user-select: none;
-  font-size: 13px;
+  font-size: ${(props) => props.$styles.textSize};
   color: #222;
 
   &:hover {
